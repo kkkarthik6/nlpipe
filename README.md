@@ -140,3 +140,23 @@ After this, if you'd like to update your project requirements, please update `sr
 =======
 # nlpipe
 >>>>>>> e99b680e755403282209006fbfe8f151420781e6
+
+______________________________________________________________________________________________________________________________
+______________________________________________________________________________________________________________________________
+______________________________________________________________________________________________________________________________
+
+This package provides essential elements of nlp project. The current project is in development phase. We hope to maintain state of the art and widely used nlp approaches integrated to respective landscape we defined. Please contribute your new nlp approaches and we would love to integrate your algorithms as we see fit.
+
+
+The example pipeline we have here follows the flow/pipeline figure as seen in kedro-pipeline.png
+
+
+
+
+
+
+
+
+
+
+
