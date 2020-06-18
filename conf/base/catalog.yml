@@ -47,10 +47,18 @@ cfpb:
   type: pandas.CSVDataSet
   filepath: data/01_raw/complaints.csv
 
-countvectorizer:
-  type: pickle.PickleDataSet
-  filepath: data/06_models/count_vectorizer.pkl
+news:
+  type: pandas.CSVDataSet
+  filepath: data/01_raw/news_data.csv
 
-corex_model:
-  type: pickle.PickleDataSet
-  filepath: data/06_models/corex_model.pkl
+steam_reviews:
+  type: pandas.CSVDataSet
+  filepath: data/01_raw/steam_reviews.csv
+
+#countvectorizer:
+#  type: pickle.PickleDataSet
+#  filepath: data/06_models/count_vectorizer.pkl
+
+#corex_model:
+#  type: pickle.PickleDataSet
+#  filepath: data/06_models/corex_model.pkl

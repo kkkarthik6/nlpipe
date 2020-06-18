@@ -80,18 +80,27 @@ def split_data(data: pd.DataFrame, example_test_data_ratio: float) -> Dict[str, 
 
 '''Vectorization'''
 from sklearn.mixture import GaussianMixture
+from sklearn.ensemble import GradientBoostingClassifier
 import umap.umap_ as umap
 import umap.plot as uplot
 import numpy as np
 import pandas as pd
-
-def gmm_train(n_components:int,x:np.ndarray,y:list):
-    gmm=GaussianMixture(n_components=n_components)
-    gmm.fit(x,y)
+from sklearn.metrics import classification_report
+def gmm_train(x:np.ndarray,y:list):
+    gmm=GaussianMixture(n_components=len(set(y)))
+    gmm.fit(x, y)
     return gmm
+def RF_train(x:np.ndarray,y:list):
+    clf = GradientBoostingClassifier(random_state=0)
+    clf.fit(x,y)
+    return clf
 def gmm_predict(model,x):
     preds = model.predict(x)
     return preds
+def model_predict(model,x):
+    preds = model.predict(x)
+    return preds
+
 def umap_iplot(x, df_text,input_column,preds):
     hover_data = pd.DataFrame({'index': preds,
                                'label': df_text[input_column]})
@@ -99,3 +108,6 @@ def umap_iplot(x, df_text,input_column,preds):
     p = uplot.interactive(mapper, labels=preds, hover_data=hover_data, point_size=2)
     uplot.show(p)
     return mapper
+def report_gen(y_test,preds):
+    print(classification_report(y_test,preds))
+    return classification_report(y_test,preds)

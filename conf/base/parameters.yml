@@ -2,9 +2,11 @@
 # Parameters for the example pipeline. Feel free to delete these once you
 # remove the example pipeline from pipeline.py and the example nodes in
 # `src/pipelines/`
-target: ['Product']
-columns: ['Consumer complaint narrative']
+target: ['recommendation']
+columns: ['review']
 #example_learning_rate: 0.01
 preprocess_out: '/Users/karthik/nlpipe/nlpipe/data/02_intermediate/df_sents.csv'
-n_components: 50
+#n_components: 50
 input_column: "sentences"
+uniqueID: "textID"
+n_topics: 30

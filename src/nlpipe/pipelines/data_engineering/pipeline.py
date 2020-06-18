@@ -56,7 +56,7 @@ from kedro.pipeline import Pipeline, node
 
 from .nodes import InputAbstraction
 
-input_abstraction= InputAbstraction(sample_data_ratio=0.001)
+input_abstraction= InputAbstraction(sample_data_ratio=1)
 
 
 def create_pipeline(**kwargs):
@@ -64,7 +64,7 @@ def create_pipeline(**kwargs):
         [
             node(
                 input_abstraction.split_data,
-                ["cfpb", "params:target", "params:columns"],
+                ["steam_reviews", "params:target", "params:columns"],
                 dict(
                     train_x="train_x",
                     train_y="train_y",

@@ -65,6 +65,11 @@ def create_pipeline(**kwargs):
                 spacy_preprocess.get_DF,
                 ["train_x","params:preprocess_out"],
                 "df_sents",
+            ),
+            node(
+                spacy_preprocess.get_DF,
+                ["test_x", "params:preprocess_out"],
+                "df_sents_test",
             )
         ]
     )

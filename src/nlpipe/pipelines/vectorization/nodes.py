@@ -176,7 +176,7 @@ class TopicVectorizer:
         # Train the CorEx topic model with 50 topics
         self.corex = ct.Corex(n_hidden=n_topics, words=words, max_iter=200, verbose=False, seed=1)
         self.corex.fit(doc_word, words=words)
-        return self.corex
+        return dict(corex_model=self.corex, countvectorizer= self.countvectorizer)
     def predict_Corex(self,data_df,corex,countvectorizer):
         self.data_df = data_df
         if countvectorizer:
@@ -201,7 +201,8 @@ class TopicVectorizer:
             raise PipelineError('Please Input/Train the model to make predictions', 'Use train_Corex to train your corex model')
         return dict(
             corex_vecs_1 = vec[0, :, :],
-            corex_vecs_2 = vec[1, :, :]
+            corex_vecs_2 = vec[1, :, :],
+            textID=self.data_df[self.uniqueID].values.tolist()
         )
 
 
@@ -220,7 +221,7 @@ class SentenceEmbeddings:
         model=SentenceTransformer('distilbert-base-nli-stsb-mean-tokens')
         embeddings=model.encode(self.data_df[self.sentence_col].values.tolist())
         self.bert_fast=pd.DataFrame({self.uniqueID:self.data_df[self.uniqueID].values.tolist(),self.sentence_col:self.data_df[self.sentence_col].values.tolist(),'embeddings':embeddings})
-        return embeddings
+        return np.asarray(embeddings)
     def get_precBert(self,df=pd.DataFrame()):
         self.data_df = df
         model=SentenceTransformer('bert-base-nli-stsb-mean-tokens')
@@ -234,7 +235,7 @@ class SentenceEmbeddings:
         self.bert_mid_precision=pd.DataFrame({self.uniqueID:self.data_df[self.uniqueID].values.tolist(),self.sentence_col:self.data_df[self.sentence_col].values.tolist(),'embeddings':embeddings})
         return self.bert_mid_precision
 
-class IntraFeaturePooling:
+class IntraFeaturePoolingDF:
     def __init__(self, vector_coulumn='embeddings', unique_id='textID'):
         self.df = df
         self.vec_column=vector_coulumn
@@ -248,6 +249,27 @@ class IntraFeaturePooling:
         self.df = df
         func=lambda grp:np.median(grp)
         self.median_pooling=np.vstack(self.df.groupby(self.uniqueID)[self.vec_column].apply(func).values)
+        return self.median_pooling
+class IntraFeaturePooling:
+    def __init__(self):
+        self.vec=[]
+        self.uniqueID=[]
+        self.df=pd.DataFrame()
+    def get_mean_pooling(self, vec, uniqueID):
+        self.vec=vec
+        self.uniqueID = uniqueID
+        self.df = pd.DataFrame({'uniqueID': uniqueID, 'vec_column': list(vec)})
+        print(self.df.shape)
+        func = lambda grp: np.mean(grp)
+        self.mean_pooling=np.vstack(self.df.groupby('uniqueID')['vec_column'].apply(func).values)
+        print(self.mean_pooling.shape)
+        return self.mean_pooling
+    def get_median_pooling(self, vec, uniqueID):
+        self.vec=vec
+        self.uniqueID=uniqueID
+        self.df= pd.DataFrame({'uniqueID': uniqueID, 'vec_column':vec})
+        func=lambda grp:np.median(grp)
+        self.median_pooling=np.vstack(self.df.groupby('uniqueID')['vec_column'].apply(func).values)
         return self.median_pooling
 
 class Autoencoder:
@@ -292,19 +314,19 @@ class Autoencoder:
 
 
 class InterFeatureEncoder:
-    def __init__(self, latent_dim=50):
+    def __init__(self, latent_dim=100):
         self.latent_dim = latent_dim
-        self.feature_lst=None
+        self.feature_lst= None
         self.AE = None
 
-    def concatenate_features(self, feature_1=[], feature_2=[], feature_3=[]):
+    def concatenate_features(self, feature_1=[], feature_2=[]):
         feature_lst=[]
         if len(feature_1)>0:
             feature_lst.append(feature_1)
         if len(feature_2) > 0:
             feature_lst.append(feature_2)
-        if len(feature_3) > 0:
-            feature_lst.append(feature_3)
+        '''if len(feature_3) > 0:
+            feature_lst.append(feature_3)'''
         self.feature_lst = feature_lst
         cu = self.feature_lst[0]
         print(cu.shape)
@@ -314,13 +336,18 @@ class InterFeatureEncoder:
                 cu = np.hstack([cu, m])
         self.feature_input = cu
 
-    def autoencoder(self,feature_1=[], feature_2=[], feature_3=[]):
-        self.concatenate_features(feature_1, feature_2, feature_3)
+    def autoencoder(self,feature_1=[], feature_2=[]):
+        self.concatenate_features(feature_1, feature_2)
         if not self.AE:
             print(self.feature_input.shape)
             self.AE = Autoencoder(latent_dim=self.latent_dim)
             print('Fitting Autoencoder ...')
             self.AE.fit(self.feature_input)
             print('Fitting Autoencoder Done!')
+        return dict(ae=self.AE.encoder)
+    def ae_predict(self,feature_1=[], feature_2=[],uniqueID=[],model=None):
+        if model:
+            self.AE.encoder=model
+        self.concatenate_features(feature_1, feature_2)
         vec = self.AE.encoder.predict(self.feature_input)
-        return vec
+        return dict(vec=vec, uniqueID=uniqueID)

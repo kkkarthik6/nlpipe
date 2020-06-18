@@ -53,24 +53,23 @@ def create_pipeline(**kwargs):
     )'''
 from kedro.pipeline import Pipeline, node
 
-from .nodes import gmm_train, gmm_predict, umap_iplot
+from .nodes import gmm_train, model_predict, umap_iplot, report_gen, RF_train
+
 
 def create_pipeline(**kwargs):
     return Pipeline(
         [
             node(
-                gmm_train,
-                ["params:n_components", "corex_encoded", "train_y"],
-                "gmm_model"
+                RF_train,
+                ["corex_pooled", "train_y"],
+                "RF_model"
             ),
-            node(gmm_predict,
-                 ["gmm_model", "corex_encoded"],
+            node(model_predict,
+                 ["RF_model", "corex_pooled_t"],
                  "predictions"),
-            node(
-                umap_iplot, #x,df_text,input_column,preds
-                ["corex_encoded", "df_sents", "params:input_column", "predictions"],
-                "plot"
-            )
+            node(report_gen,
+                 ["test_y", "predictions"],
+                 "report")
         ]
     )
 

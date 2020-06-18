@@ -91,7 +91,7 @@ class InputAbstraction:
         self.test_data_ratio=test_data_ratio
         self.drop_nan=drop_nan
         self.numeric_labels=numeric_labels
-    def split_data(self,data=pd.DataFrame(),target=['Product'],columns=['Consumer complaint narrative']) -> Dict[str, Any]:
+    def split_data(self,data=pd.DataFrame(),target=[],columns=[]) -> Dict[str, Any]:
         """
         The split ratio parameter is taken from conf/project/parameters.yml.
         The data and the parameters will be loaded and provided to your function
@@ -99,7 +99,7 @@ class InputAbstraction:
         """
         self.data = data
         if self.drop_nan:
-            self.data=self.data.dropna(subset=['Consumer complaint narrative', 'Product','Issue'])
+            self.data=self.data.dropna(subset=target)
         self.columns = columns
         self.target=target
         # Shuffle all the data
