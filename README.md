@@ -21,15 +21,6 @@ In order to get the best out of the template:
  * Don't commit any credentials or local configuration to your repository
  * Keep all credentials or local configuration in `conf/local/`
 
-## Installing dependencies
-
-Declare any dependencies in `src/requirements.txt` for `pip` installation and `src/environment.yml` for `conda` installation.
-
-To install them, run:
-
-```
-kedro install
-```
 
 ## Running Kedro
 
@@ -39,15 +30,6 @@ You can run your Kedro project with:
 kedro run
 ```
 
-## Testing Kedro
-
-Have a look at the file `src/tests/test_run.py` for instructions on how to write your tests. You can run your tests with the following command:
-
-```
-kedro test
-```
-
-To configure the coverage threshold, please have a look at the file `.coveragerc`.
 
 
 ## Working with Kedro from notebooks
