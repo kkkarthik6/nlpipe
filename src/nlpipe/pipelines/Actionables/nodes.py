@@ -86,9 +86,9 @@ import umap.plot as uplot
 import numpy as np
 import pandas as pd
 from sklearn.metrics import classification_report
-def gmm_train(x:np.ndarray,y:list):
-    gmm=GaussianMixture(n_components=len(set(y)))
-    gmm.fit(x, y)
+def gmm_train(x:np.ndarray,n_clusters):
+    gmm=GaussianMixture(n_components=n_clusters)
+    gmm.fit(x)
     return gmm
 def RF_train(x:np.ndarray,y:list):
     clf = GradientBoostingClassifier(random_state=0)
@@ -101,9 +101,9 @@ def model_predict(model,x):
     preds = model.predict(x)
     return preds
 
-def umap_iplot(x, df_text,input_column,preds):
+def umap_iplot(x, df_text,preds):
     hover_data = pd.DataFrame({'index': preds,
-                               'label': df_text[input_column]})
+                               'label': df_text})
     mapper = umap.UMAP().fit(x)
     p = uplot.interactive(mapper, labels=preds, hover_data=hover_data, point_size=2)
     uplot.show(p)

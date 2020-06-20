@@ -74,8 +74,7 @@ def create_pipeline(**kwargs):
                      corex_model='corex_model',
                      countvectorizer='countvectorizer'
                  )
-
-            ) ,
+            ),
             node(
                 topic_vectorizer.predict_Corex,
                 ["df_sents", "corex_model", "countvectorizer"],
@@ -86,7 +85,7 @@ def create_pipeline(**kwargs):
                 )
             ),
             node(
-                sentence_encode.get_distillBert,
+                sentence_encode.get_precBert,
                 ["df_sents"], "distill_vec"
             ),
             node( inter_vectorizer.autoencoder,
@@ -111,7 +110,7 @@ def create_pipeline(**kwargs):
                     textID="textID_t"
                 )
             ),
-            node( sentence_encode.get_distillBert,
+            node( sentence_encode.get_precBert,
                   ["df_sents_test"], "distill_vec_t"),
             node(inter_vectorizer.ae_predict,
                  ["corex_vecs_2_t", "distill_vec_t", "textID_t", 'auto_encoder_model'],

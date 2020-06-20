@@ -227,13 +227,13 @@ class SentenceEmbeddings:
         model=SentenceTransformer('bert-base-nli-stsb-mean-tokens')
         embeddings=model.encode(self.data_df[self.sentence_col].values.tolist())
         self.bert_high_precision=pd.DataFrame({self.uniqueID:self.data_df[self.uniqueID].values.tolist(),self.sentence_col:self.data_df[self.sentence_col].values.tolist(),'embeddings':embeddings})
-        return self.bert_high_precision
+        return np.asarray(embeddings)
     def get_meanBert(self,df=pd.DataFrame()):
         self.data_df = df
         model=SentenceTransformer('bert-base-nli-mean-tokens')
         embeddings=model.encode(self.data_df[self.sentence_col].values.tolist())
         self.bert_mid_precision=pd.DataFrame({self.uniqueID:self.data_df[self.uniqueID].values.tolist(),self.sentence_col:self.data_df[self.sentence_col].values.tolist(),'embeddings':embeddings})
-        return self.bert_mid_precision
+        return np.asarray(embeddings)
 
 class IntraFeaturePoolingDF:
     def __init__(self, vector_coulumn='embeddings', unique_id='textID'):
@@ -320,20 +320,9 @@ class InterFeatureEncoder:
         self.AE = None
 
     def concatenate_features(self, feature_1=[], feature_2=[]):
-        feature_lst=[]
-        if len(feature_1)>0:
-            feature_lst.append(feature_1)
-        if len(feature_2) > 0:
-            feature_lst.append(feature_2)
-        '''if len(feature_3) > 0:
-            feature_lst.append(feature_3)'''
-        self.feature_lst = feature_lst
-        cu = self.feature_lst[0]
+        gamma=5
+        cu = np.hstack([gamma*feature_1, feature_2])
         print(cu.shape)
-        for i, m in enumerate(self.feature_lst):
-            if i > 0:
-                print(m.shape)
-                cu = np.hstack([cu, m])
         self.feature_input = cu
 
     def autoencoder(self,feature_1=[], feature_2=[]):

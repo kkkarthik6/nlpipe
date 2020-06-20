@@ -69,7 +69,14 @@ def create_pipeline(**kwargs):
                  "predictions"),
             node(report_gen,
                  ["test_y", "predictions"],
-                 "report")
+                 "report"),
+            node(gmm_train,
+                 ["corex_pooled","params:n_topics"],
+                 "gmm"),
+            node(model_predict,
+                 ["gmm", "corex_pooled_t"], "cluster_out"),
+            node(umap_iplot,
+                 ["corex_pooled_t", "test_x", "cluster_out"], "umap_vecs")
         ]
     )
 
