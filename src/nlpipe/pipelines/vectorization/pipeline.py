@@ -35,9 +35,10 @@ sentence_encode=SentenceEmbeddings(sentence_col='sentences', unique_id='textID')
 
 import pickle
 
-with open('/Users/karthik/nlpipe/nlpipe/data/06_models/count_vectorizer.pkl', 'rb') as f:
+'''with open('/Users/karthik/nlpipe/nlpipe/data/06_models/count_vectorizer.pkl', 'rb') as f:
     countvectorizer=pickle.load(f)
-topic_vectorizer=TopicVectorizer(count_vectorizer=countvectorizer)
+'''
+topic_vectorizer=TopicVectorizer()
 inter_vectorizer=InterFeatureEncoder(latent_dim=64)
 intra_pool=IntraFeaturePooling()
 
