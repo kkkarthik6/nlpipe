@@ -43,13 +43,13 @@
 # This is a data set used by the "Hello World" example pipeline provided with the project
 # template. Please feel free to remove it once you remove the example pipeline.
 
-cfpb:
-  type: pandas.CSVDataSet
-  filepath: data/01_raw/complaints.csv
+#cfpb:
+#  type: pandas.CSVDataSet
+#  filepath: data/01_raw/complaints.csv
 
-news:
-  type: pandas.CSVDataSet
-  filepath: data/01_raw/news_data.csv
+#news:
+#  type: pandas.CSVDataSet
+#  filepath: data/01_raw/news_data.csv
 
 steam_reviews:
   type: pandas.CSVDataSet

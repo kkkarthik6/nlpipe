@@ -34,7 +34,6 @@ from typing import Dict
 from kedro.pipeline import Pipeline
 
 from nlpipe.pipelines import data_engineering as de
-from nlpipe.pipelines import data_science as ds
 from nlpipe.pipelines import Preprocess as prep
 from nlpipe.pipelines import vectorization as vect
 from nlpipe.pipelines import Actionables as actn
@@ -59,14 +58,14 @@ def create_pipelines(**kwargs) -> Dict[str, Pipeline]:
 
     data_engineering_pipeline = de.create_pipeline()
     spacy_preprocess_data = prep.create_pipeline()
-    data_science_pipeline = ds.create_pipeline()
-    vectorizer_pipeline=vect.create_pipeline()
-    actionable_pipeline=actn.create_pipeline()
+    #data_science_pipeline = ds.create_pipeline()
+    vectorizer_pipeline = vect.create_pipeline()
+    actionable_pipeline = actn.create_pipeline()
 
     return {
         "de": data_engineering_pipeline,
         "prep": spacy_preprocess_data,
-        "ds": data_science_pipeline,
-        "vec":vectorizer_pipeline,
-        "__default__": data_engineering_pipeline+spacy_preprocess_data+vectorizer_pipeline+actionable_pipeline,
+        #"ds": data_science_pipeline,
+        "vec": vectorizer_pipeline,
+        "__default__": data_engineering_pipeline+spacy_preprocess_data+vectorizer_pipeline+actionable_pipeline
     }
