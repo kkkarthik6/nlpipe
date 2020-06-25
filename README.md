@@ -5,7 +5,7 @@
 
 This project is meant to be a one stop shop for all the natural language processing needs. I intend to put together the state of the art NLP models just a step away from integration. Just the idea of whiteboard to production excited me so much and I leveraged 'Kedro 0.16.1' to make this possible. The library now consists of state of the art vectorization methods and industrial standard text analytics. 
 
-Nodes Present in this version of NLP:
+Nodes Present in this version of nlpipe:
 
 1. Data Engineering:
    1. Load data
