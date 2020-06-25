@@ -31,12 +31,27 @@ Nodes Present in this version of NLP:
 
  
  
+## Setup/Install dependencies
 
-This is your new Kedro project, which was generated using `Kedro 0.16.1` by running:
+1. Install anaconda and create a conda virtual environment using 
+```
+conda create --name NLP
+```
+2. Activate the virtual environment using the following command
 
 ```
-kedro new
+conda activate NLP
 ```
+
+3. Install the dependencies using requirements.txt (pip freeze of my project workspace)
+
+```
+pip install -r requirements.txt
+```
+
+
+
+
 
 Take a look at the [documentation](https://kedro.readthedocs.io) to get started.
 
