@@ -9,9 +9,9 @@ Nodes Present in this version of nlpipe:
 
 1. Data Engineering:
    1. Load data
-   2. Split incoming data test and train sets
+   2. Split incoming data into test and train sets
 2. Data Preprocessing:
-   1. Spacy Tokenization 
+   1. Spacy Tokenization (custom sentence tokenizer available) 
    2. Spacy Dependency Parser
    3. Spacy Parts of Speech Tagger
 3. Vectorization:
@@ -171,7 +171,7 @@ ________________________________________________________________________________
 This package provides essential elements of nlp project. The current project is in development phase. We hope to maintain state of the art and widely used nlp approaches integrated to respective landscape we defined. Please contribute your new nlp approaches and we would love to integrate your algorithms as we see fit.
 
 
-The example pipeline we have here follows the flow/pipeline figure as seen in kedro-pipeline.svg
+The example pipeline we have here follows the flow/pipeline figure as seen in kedro-pipeline-2.svg
 
 
 
