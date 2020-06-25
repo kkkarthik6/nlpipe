@@ -40,7 +40,7 @@ kedro new
 
 Take a look at the [documentation](https://kedro.readthedocs.io) to get started.
 
-## Rules and guidelines
+## Guidelines
 
 In order to get the best out of the template:
 
@@ -147,10 +147,7 @@ kedro build-reqs
 
 This will copy the contents of `src/requirements.txt` into a new file `src/requirements.in` which will be used as the source for `pip-compile`. You can see the output of the resolution by opening `src/requirements.txt`.
 
-After this, if you'd like to update your project requirements, please update `src/requirements.in` and re-run `kedro build-reqs`.
-=======
-# nlpipe
->>>>>>> e99b680e755403282209006fbfe8f151420781e6
+
 
 ______________________________________________________________________________________________________________________________
 ______________________________________________________________________________________________________________________________
@@ -159,7 +156,7 @@ ________________________________________________________________________________
 This package provides essential elements of nlp project. The current project is in development phase. We hope to maintain state of the art and widely used nlp approaches integrated to respective landscape we defined. Please contribute your new nlp approaches and we would love to integrate your algorithms as we see fit.
 
 
-The example pipeline we have here follows the flow/pipeline figure as seen in kedro-pipeline.png
+The example pipeline we have here follows the flow/pipeline figure as seen in kedro-pipeline.svg
 
 
 
