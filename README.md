@@ -8,21 +8,21 @@ This project is meant to be a one stop shop for all the natural language process
 Nodes Present in this version of NLP:
 
 1. Data Engineering:
-  1. Load data
-  2. Split incoming data test and train sets
+   1. Load data
+   2. Split incoming data test and train sets
 2. Data Preprocessing:
-  1. Spacy Tokenization 
-  2. Spacy Dependency Parser
-  3. Spacy Parts of Speech Tagger
+   1. Spacy Tokenization 
+   2. Spacy Dependency Parser
+   3. Spacy Parts of Speech Tagger
 3. Vectorization:
-  1. Corex Topic Modeling
-  2. BERT sentence vectorizer
-  3. Auto encoders to combine various vectors
-  4. LSTM encoders to combine various vectors
+   1. Corex Topic Modeling 
+   2. BERT sentence vectorizer
+   3. Auto encoders to combine various vectors
+   4. LSTM encoders to combine various vectors
 4. Actionables:
-  1. GMM Models
-  2. GradientBoost Models
-  3. Umap interactive plots.
+   1. GMM Models
+   2. GradientBoost Models
+   3. Umap interactive plots.
  
  I have also integrated a pipeline from the above nodes to classify steam reviews. We also have a very powerful tool which allows us to see how each nodes are connected as follows
  
