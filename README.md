@@ -3,6 +3,36 @@
 
 ## Overview
 
+This project is meant to be a one stop shop for all the natural language processing needs. I intend to put together the state of the art NLP models just a step away from integration. Just the idea of whiteboard to production excited me so much and I leveraged 'Kedro 0.16.1' to make this possible. The library now consists of state of the art vectorization methods and industrial standard text analytics. 
+
+Nodes Present in this version of NLP:
+
+Data Engineering:
+  1. Load data
+  2. Split incoming data test and train sets
+Data Preprocessing:
+  1. Spacy Tokenization 
+  2. Spacy Dependency Parser
+  3. Spacy Parts of Speech Tagger
+Vectorization:
+  1. Corex Topic Modeling
+  2. BERT sentence vectorizer
+  3. Auto encoders to combine various vectors
+  4. LSTM encoders to combine various vectors
+Actionables:
+  1. GMM Models
+  2. GradientBoost Models
+  3. Umap interactive plots.
+ 
+ I have also integrated a pipeline from the above nodes to classify steam reviews. We also have a very powerful tool which allows us to see how each nodes are connected as follows
+ 
+  ![Kedro_pipeline](/kedro-pipeline-2.svg)
+Format: ![Alt Text](url)
+ 
+
+ 
+ 
+
 This is your new Kedro project, which was generated using `Kedro 0.16.1` by running:
 
 ```
