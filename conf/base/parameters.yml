@@ -5,7 +5,7 @@
 target: ['recommendation']
 columns: ['review']
 #example_learning_rate: 0.01
-preprocess_out: '/Users/karthik/nlpipe/nlpipe/data/02_intermediate/df_sents.csv'
+preprocess_out: 'data/02_intermediate/df_sents.csv'
 #n_components: 50
 input_column: "sentences"
 uniqueID: "textID"
