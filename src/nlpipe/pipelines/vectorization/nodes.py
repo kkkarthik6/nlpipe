@@ -34,31 +34,26 @@ class ClassicVectorizationTrain:
     def __init__(self, tfidf=0,countvectorizer=0):
         self.tfidf=tfidf
         self.countvectorizer=countvectorizer
-        self.text_corpus=None
+        self.text_corpus=[]
         self.count_vectorizer=None
         self.tfidf_vectorizer=None
         self.sparse_rep=None
-        if self.tfidf:
-            self.tfidf_vectorizer=self.get_tfidfVectorizer()
-        if self.countvectorizer:
-            self.count_vectorizer=self.get_countVectorizer()
-    def get_countVectorizer(self,text_corpus=None):
+    def get_countVectorizer(self,text_corpus):
         self.text_corpus = text_corpus
-        if len(self.text_corpus)==0:
+        if self.text_corpus==None:
             raise PipelineError('Please provide text corpus', 'This object provides advanced corex vectors.')
-
-        print(self.text_corpus)
+        #print(self.text_corpus)
         if self.count_vectorizer==None:
             self.count_vectorizer=CountVectorizer(stop_words='english',max_df=0.3,max_features=10000)
             self.count_vectorizer.fit(self.text_corpus)
         return self.count_vectorizer
-    def get_tfidfVectorizer(self):
+    def get_tfidfVectorizer(self,text_corpus):
         self.text_corpus = text_corpus
         if self.count_vectorizer==None:
             self.tfidf_vectorizer=TfidfVectorizer(stop_words='english',max_df=0.3,max_features=10000)
             self.tfidf_vectorizer.fit(self.text_corpus)
         return self.tfidf_vectorizer
-    def get_sparseRepresentation(self):
+    def get_sparseRepresentation(self,text_corpus):
         self.text_corpus = text_corpus
         if self.count_vectorizer:
             transformed=self.count_vectorizer.transform(self.text_corpus)

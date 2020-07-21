@@ -5,7 +5,7 @@ from kedro.pipeline import Pipeline, node
 
 from .nodes import InputAbstraction
 
-input_abstraction = InputAbstraction(sample_data_ratio=0.01)
+input_abstraction = InputAbstraction(sample_data_ratio=0.001)
 
 
 def create_pipeline(**kwargs):
