@@ -12,6 +12,9 @@ class InputAbstraction:
         self.drop_nan=drop_nan
         self.numeric_labels=numeric_labels
     def split_data(self,data=pd.DataFrame(),target=[],columns=[]) -> Dict[str, Any]:
+        
+        #TODO: Review and remove this comment if not necessary
+        
         """
         The split ratio parameter is taken from conf/project/parameters.yml.
         The data and the parameters will be loaded and provided to your function
