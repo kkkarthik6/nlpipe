@@ -2,7 +2,8 @@ from pathlib import Path
 
 import pytest
 import pandas as pd
-from nlpipe.pipelines.Preprocess.nodes import SpacyBulk,Spacyize,CustomTokenParser
+from nlpipe.pipelines.data_engineering.nodes import InputAbstraction
+from nlpipe.pipelines.Preprocess.nodes import SpacyBulk,Spacyize,CustomTokenParser,PipelineError
 
 @pytest.fixture
 def spacy_bulk():
@@ -15,6 +16,20 @@ def spacyize():
 @pytest.fixture
 def custom_token_parser():
     return CustomTokenParser()
+
+@pytest.fixture
+def input_abstraction():
+    return InputAbstraction()
+
+@pytest.fixture
+def split_data(input_abstraction):
+    test_data_source_df = pd.read_csv(r'data/01_raw/iris.csv')
+    test_target = ['species']
+    test_columns = []
+ 
+    test_result = input_abstraction.split_data(test_data_source_df, test_target, test_columns)
+
+    return test_result
 
 class TestPreprocessNodes_SpacyBulk:
     
@@ -33,5 +48,10 @@ class TestPreprocessNodes_SpacyBulk:
 
         assert len(test_spacy_bulk.disable) == 3
 
-    def test_split_data_nodata_failure(self, spacy_bulk):
-        assert 1 == 1
+    def test_get_df_empty_text_faliure(self, spacy_bulk, split_data):
+        test_text_corpus = []
+        test_preprocess_out = []
+
+        with pytest.raises(PipelineError) as pipelineError:
+            spacy_bulk.get_DF(test_text_corpus,test_preprocess_out)
+        assert str(pipelineError.value) == "('Input text cannot be None', 'This object extract sentences, parts of speech, named entity recognition, dependencies')"
