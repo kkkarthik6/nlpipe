@@ -3,7 +3,7 @@
 
 ## Overview
 
-This project is meant to be a one stop shop for all the natural language processing needs. I intend to put together the state of the art NLP models just a step away from integration. Just the idea of whiteboard to production excited me so much and I leveraged 'Kedro 0.16.1' to make this possible. The library now consists of state of the art vectorization methods and industrial standard text analytics. 
+This project is meant to be a one stop shop for all the natural language processing needs. It is intended to put together the state of the art NLP models just a step away from integration. Just the idea of whiteboard to production excits us. The library now consists of state of the art vectorization methods and industrial standard text analytics. 
 
 Nodes Present in this version of nlpipe:
 
@@ -22,9 +22,11 @@ Nodes Present in this version of nlpipe:
 4. Actionables:
    1. GMM Models
    2. GradientBoost Models
-   3. Umap interactive plots.
+   3. Umap interactive plots
+5. Summarization.
+   1.Page Ranking 
  
- I have also integrated a pipeline from the above nodes to classify steam reviews. We also have a very powerful tool which allows us to see how each nodes are connected as follows
+An example pipeline was integrated using the library to classify steam reviews. We can leverage a very powerful tool which allows us to see how each nodes are connected by using kedro-viz
  
   ![Kedro_pipeline](/kedro-pipeline-2.svg)
  
