@@ -48,7 +48,7 @@ class SpacyBulk():
         self.nerl = []
         self.text_corpus = []
 
-    def get_DF(self, text_corpus,preprocess_out):
+    def get_DF(self, text_corpus, preprocess_out):
         self.text_corpus = text_corpus
         if len(self.text_corpus) == 0:
             raise PipelineError('Input text cannot be None',

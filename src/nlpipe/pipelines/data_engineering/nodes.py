@@ -41,18 +41,16 @@ class InputAbstraction:
         self.drop_nan=drop_nan
         self.numeric_labels=numeric_labels
     def split_data(self,data=pd.DataFrame(),target=[],columns=[]) -> Dict[str, Any]:
-
-        data = data
         self.columns = columns
         self.target = target
+        # Arguments check
         if data.empty:
             raise PipelineError('Please provide data', 'data argument empty, Cannot proceed without data')
-        if len(self.columns) < 1:
+        if not self.columns:
             raise PipelineError('Please provide Input Column Name which has to be subjected to analysis', 'columns argument empty, Cannot proceed with out column name')
-        if len(self.target) < 1:
+        if not self.target:
             data['target']=[1]*data.shape[0]
             warnings.warn("No target column provided, All data points will have same target value, Please use target argument to provide target labels", NoTargetWarning)
-            raise PipelineError('Please provide column name with text input', 'Cannot proceed with out column name')
         elif len(self.target) > 1:
             data = data.dropna(subset=self.target)
             data['target'] = data[self.target].agg('. '.join, axis=1)
@@ -62,11 +60,11 @@ class InputAbstraction:
             data['target'] = data[self.target]
             classes = list(set(data['target'].values.tolist()))
 
-        # Shuffle all the data
-        if self.sample_data_ratio>SAMPLING_THRESHOLD:
+        # Shuffle and sample the data
+        if self.sample_data_ratio > SAMPLING_THRESHOLD:
             warnings.warn("'This data is huge',Please lower the sample_data_ratio value", LimitDataLoadWarning)
         data = data.sample(frac=self.sample_data_ratio).reset_index(drop=True)
-
+        # split data to train and test sets with labels
         train_x, test_x, train_y, test_y = train_test_split(data[self.columns].values.tolist(), data['target'].values.tolist(), test_size=self.test_data_ratio)
         if self.numeric_labels:
             train_y = list(map(lambda x: classes.index(x), train_y))
