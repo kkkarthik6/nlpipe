@@ -47,7 +47,7 @@ class InputAbstraction:
         self.target = target
         if data.empty:
             raise PipelineError('Please provide data', 'data argument empty, Cannot proceed without data')
-        if len(self.columns) < 1:
+        if not self.columns:
             raise PipelineError('Please provide Input Column Name which has to be subjected to analysis', 'columns argument empty, Cannot proceed with out column name')
         if len(self.target) < 1:
             data['target']=[1]*data.shape[0]
