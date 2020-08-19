@@ -49,7 +49,7 @@ class InputAbstraction:
             raise PipelineError('Please provide data', 'data argument empty, Cannot proceed without data')
         if not self.columns:
             raise PipelineError('Please provide Input Column Name which has to be subjected to analysis', 'columns argument empty, Cannot proceed with out column name')
-        if len(self.target) < 1:
+        if not self.target:
             data['target']=[1]*data.shape[0]
             warnings.warn("No target column provided, All data points will have same target value, Please use target argument to provide target labels", NoTargetWarning)
             raise PipelineError('Please provide column name with text input', 'Cannot proceed with out column name')
