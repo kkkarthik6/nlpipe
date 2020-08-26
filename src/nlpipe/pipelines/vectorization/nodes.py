@@ -153,16 +153,13 @@ class SentenceEmbeddings:
 
 class IntraFeaturePoolingDF:
     def __init__(self, vector_coulumn='embeddings', unique_id='textID'):
-        self.df = df
         self.vec_column=vector_coulumn
         self.uniqueID=unique_id
     def get_mean_pooling(self, df=pd.DataFrame()):
-        self.df = df
         func=lambda grp:np.mean(grp)
         self.mean_pooling=np.vstack(self.df.groupby(self.uniqueID)[self.vec_column].apply(func).values)
         return self.mean_pooling
     def get_median_pooling(self, df=pd.DataFrame()):
-        self.df = df
         func=lambda grp:np.median(grp)
         self.median_pooling=np.vstack(self.df.groupby(self.uniqueID)[self.vec_column].apply(func).values)
         return self.median_pooling
