@@ -23,9 +23,9 @@ def input_abstraction():
 
 @pytest.fixture
 def split_data(input_abstraction):
-    test_data_source_df = pd.read_csv(r'data/01_raw/iris.csv')
-    test_target = ['species']
-    test_columns = ['sepal_length','sepal_width','petal_length','petal_width']
+    test_data_source_df = pd.read_csv(r'data/01_raw/test_steam_reviews_sample.csv')
+    test_target = ['recommendation']
+    test_columns = ['date_posted','funny','helpful','hour_played','is_early_access_review','recommendation','review','title']
  
     test_result = input_abstraction.split_data(test_data_source_df, test_target, test_columns)
 
@@ -48,7 +48,7 @@ class TestPreprocessNodes_SpacyBulk:
 
         assert len(test_spacy_bulk.disable) == 3
 
-    def test_get_df_empty_text_faliure(self, spacy_bulk, split_data):
+    def test_get_df_empty_text_failure(self, spacy_bulk, split_data):
         test_text_corpus = []
         test_preprocess_out = []
 
