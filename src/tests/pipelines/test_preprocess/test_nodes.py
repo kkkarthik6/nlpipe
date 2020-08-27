@@ -55,3 +55,12 @@ class TestPreprocessNodes_SpacyBulk:
         with pytest.raises(PipelineError) as pipelineError:
             spacy_bulk.get_DF(test_text_corpus,test_preprocess_out)
         assert str(pipelineError.value) == "('Input text cannot be None', 'This object extract sentences, parts of speech, named entity recognition, dependencies')"
+    
+    
+    def test_get_df_withtext_success(self, spacy_bulk, split_data):
+        test_text_corpus = split_data['train_x']
+        test_preprocess_out = 'df_sents'
+
+        test_result_df = spacy_bulk.get_DF(test_text_corpus, test_preprocess_out)
+        print(len(test_result_df['sentences']),len(test_result_df['textID']), len(test_result_df['tokens']))
+        assert len(test_result_df['sentences']) == 5000
