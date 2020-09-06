@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+![Build](https://github.com/kkkarthik6/nlpipe/workflows/Build/badge.svg)
 # nlpipe
 
 ## Overview

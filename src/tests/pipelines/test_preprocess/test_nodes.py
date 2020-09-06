@@ -25,7 +25,7 @@ def input_abstraction():
 def split_data(input_abstraction):
     test_data_source_df = pd.read_csv(r'data/01_raw/iris.csv')
     test_target = ['species']
-    test_columns = []
+    test_columns = ['sepal_length','sepal_width','petal_length','petal_width']
  
     test_result = input_abstraction.split_data(test_data_source_df, test_target, test_columns)
 
