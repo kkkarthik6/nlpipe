@@ -63,7 +63,7 @@ class SpacyBulk():
             self.dep = []
             self.pos_tag = []
             self.doc = self.nlp(str(text))
-            sents = self.get_sentences_lst()
+            sents = [i.text for i in self.doc.sents]
             ID.extend([i] * len(sents))
             sentences.extend(sents)
             tokens.extend(self.get_tokens())
