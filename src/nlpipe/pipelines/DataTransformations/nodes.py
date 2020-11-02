@@ -87,7 +87,7 @@ class DataOperations():
             raise PipelineError('The data frame provided was empty', 'Please check the dataframe argument')
         if isratio and quantity<1:
             return df.sample(frac=quantity,random_state=2)
-        elif isratio=False and quantity>1:
+        elif isratio is False and quantity>1:
             return df.sample(int(quantity),random_state=2)
         else:
             raise PipelineError('It can either be ratio or a quantity','Please check the isratio flag to match with type of sampling')
