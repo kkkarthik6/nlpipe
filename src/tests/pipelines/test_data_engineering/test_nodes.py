@@ -36,13 +36,6 @@ class TestDataEngineeringNodes:
 
         pytest.raises(PipelineError,input_abstraction.split_data,test_data_source_df, test_target, test_columns)
 
-    def test_split_data_withdata_notarget_failure(self, input_abstraction):
-        test_data_source_df = pd.read_csv(r'data/01_raw/iris.csv')
-        test_target = []
-        test_columns = ['sepal_length','sepal_width','petal_length','petal_width']
-
-        pytest.raises(PipelineError,input_abstraction.split_data,test_data_source_df, test_target, test_columns)
-    
     def test_split_data_withdata_nocolumns_failure(self, input_abstraction):
         test_data_source_df = pd.read_csv(r'data/01_raw/iris.csv')
         test_target = ['species']
