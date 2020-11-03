@@ -31,45 +31,43 @@ class PipelineError(Error):
         self.expression = expression
         self.message = message
 class ClassicVectorizationTrain:
-    def __init__(self, tfidf=0,countvectorizer=0):
-        self.tfidf=tfidf
-        self.countvectorizer=countvectorizer
-        self.text_corpus=[]
-        self.count_vectorizer=None
-        self.tfidf_vectorizer=None
-        self.sparse_rep=None
-    def get_countVectorizer(self,text_corpus):
-        self.text_corpus = text_corpus
-        if self.text_corpus==None:
-            raise PipelineError('Please provide text corpus', 'This object provides advanced corex vectors.')
+    def __init__(self, stopwords='english', max_df=0.3, max_features=10000, ngram_range=(1, 2)):
+        self.stopwords=stopwords
+        self.max_df=max_df
+        self.max_features=max_features
+        self.ngram_range=ngram_range
+
+    def get_countVectorizer(self, text_corpus):
+        if text_corpus==None:
+            raise PipelineError('Please provide text corpus', 'This function needs text corpus to generate count vectors')
         #print(self.text_corpus)
-        if self.count_vectorizer==None:
-            self.count_vectorizer=CountVectorizer(stop_words='english',max_df=0.3,max_features=10000)
-            self.count_vectorizer.fit(self.text_corpus)
-        return self.count_vectorizer
+        count_vectorizer=CountVectorizer(stop_words=self.stopwords, max_df=self.max_df, max_features=self.max_features, ngram_range=self.ngram_range)
+        count_vectorizer.fit(text_corpus)
+        return count_vectorizer
     def get_tfidfVectorizer(self,text_corpus):
-        self.text_corpus = text_corpus
-        if self.count_vectorizer==None:
-            self.tfidf_vectorizer=TfidfVectorizer(stop_words='english',max_df=0.3,max_features=10000)
-            self.tfidf_vectorizer.fit(self.text_corpus)
-        return self.tfidf_vectorizer
-    def get_sparseRepresentation(self,text_corpus):
-        self.text_corpus = text_corpus
-        if self.count_vectorizer:
-            transformed=self.count_vectorizer.transform(self.text_corpus)
-        if self.tfidf_vectorizer:
-            transformed=self.tfidf_vectorizer.transform(self.text_corpus)
-        self.sparse_rep=csr_matrix(transformed)
-        return self.sparse_rep
+        if text_corpus==None:
+            raise PipelineError('Please provide text corpus', 'This function needs text corpus to generate tfidf vectors')
+        tfidf_vectorizer=TfidfVectorizer(stop_words=self.stopwords, max_df=self.max_df, max_features=self.max_features, ngram_range=self.ngram_range)
+        tfidf_vectorizer.fit(text_corpus)
+        return tfidf_vectorizer
+    def get_sparseRepresentation(self,text_corpus,vectorizer):
+        if text_corpus==None:
+            raise PipelineError('Please provide text corpus', 'This function needs text corpus to generate sparse representation')
+        if vectorizer:
+            transformed=vectorizer.transform(text_corpus)
+        else:
+            raise PipelineError('Please provide vectorizer', 'This function needs count/tfidf vectorizer to generate sparse representation')
+        sparse_rep = csr_matrix(transformed)
+        return sparse_rep
 
 class TopicVectorizer:
-    def __init__(self,count_vectorizer=None,sentence_col='sentences',unique_id='textID'):
+    def __init__(self,count_vectorizer=None,sentence_col='sentences', unique_id='textID'):
         self.corex=None
         self.lda=None
         self.hdp=None
         self.sentence_col = sentence_col
         self.uniqueID = unique_id
-        #self.text_corpus=None
+        self.text_corpus=None
         self.countvectorizer=count_vectorizer
     def train_Corex(self,n_topics,data_df):
         #self.countvectorizer=countvectorizer
@@ -81,7 +79,7 @@ class TopicVectorizer:
         if self.countvectorizer:
             doc_word=self.countvectorizer.transform(text_corpus)
         else:
-            countvectorizer_obj=ClassicVectorizationTrain(countvectorizer=1)
+            countvectorizer_obj=ClassicVectorizationTrain()
             self.countvectorizer=countvectorizer_obj.get_countVectorizer(text_corpus=text_corpus)
             doc_word=self.countvectorizer.transform(text_corpus)
         doc_word=csr_matrix(doc_word)
@@ -133,22 +131,22 @@ class SentenceEmbeddings:
         self.sentence_col=sentence_col
         self.uniqueID=unique_id
     def get_distillBert(self,df=pd.DataFrame()):
-        self.data_df = df
+        data_df = df
         model=SentenceTransformer('distilbert-base-nli-stsb-mean-tokens')
-        embeddings=model.encode(self.data_df[self.sentence_col].values.tolist())
-        self.bert_fast=pd.DataFrame({self.uniqueID:self.data_df[self.uniqueID].values.tolist(),self.sentence_col:self.data_df[self.sentence_col].values.tolist(),'embeddings':embeddings})
+        embeddings=model.encode(data_df[self.sentence_col].values.tolist())
+        self.bert_fast=pd.DataFrame({self.uniqueID: data_df[self.uniqueID].values.tolist(),self.sentence_col: data_df[self.sentence_col].values.tolist(),'embeddings':embeddings})
         return np.asarray(embeddings)
     def get_precBert(self,df=pd.DataFrame()):
-        self.data_df = df
+        data_df = df
         model=SentenceTransformer('bert-base-nli-stsb-mean-tokens')
-        embeddings=model.encode(self.data_df[self.sentence_col].values.tolist())
-        self.bert_high_precision=pd.DataFrame({self.uniqueID:self.data_df[self.uniqueID].values.tolist(),self.sentence_col:self.data_df[self.sentence_col].values.tolist(),'embeddings':embeddings})
+        embeddings=model.encode(data_df[self.sentence_col].values.tolist())
+        self.bert_high_precision=pd.DataFrame({self.uniqueID: data_df[self.uniqueID].values.tolist(),self.sentence_col: data_df[self.sentence_col].values.tolist(),'embeddings':embeddings})
         return np.asarray(embeddings)
     def get_meanBert(self,df=pd.DataFrame()):
-        self.data_df = df
+        data_df = df
         model=SentenceTransformer('bert-base-nli-mean-tokens')
-        embeddings=model.encode(self.data_df[self.sentence_col].values.tolist())
-        self.bert_mid_precision=pd.DataFrame({self.uniqueID:self.data_df[self.uniqueID].values.tolist(),self.sentence_col:self.data_df[self.sentence_col].values.tolist(),'embeddings':embeddings})
+        embeddings=model.encode(data_df[self.sentence_col].values.tolist())
+        self.bert_mid_precision=pd.DataFrame({self.uniqueID: data_df[self.uniqueID].values.tolist(),self.sentence_col: data_df[self.sentence_col].values.tolist(),'embeddings':embeddings})
         return np.asarray(embeddings)
 
 class IntraFeaturePoolingDF:
@@ -157,12 +155,13 @@ class IntraFeaturePoolingDF:
         self.uniqueID=unique_id
     def get_mean_pooling(self, df=pd.DataFrame()):
         func=lambda grp:np.mean(grp)
-        self.mean_pooling=np.vstack(self.df.groupby(self.uniqueID)[self.vec_column].apply(func).values)
+        self.mean_pooling=np.vstack(df.groupby(self.uniqueID)[self.vec_column].apply(func).values)
         return self.mean_pooling
     def get_median_pooling(self, df=pd.DataFrame()):
         func=lambda grp:np.median(grp)
-        self.median_pooling=np.vstack(self.df.groupby(self.uniqueID)[self.vec_column].apply(func).values)
+        self.median_pooling=np.vstack(df.groupby(self.uniqueID)[self.vec_column].apply(func).values)
         return self.median_pooling
+
 class IntraFeaturePooling:
     def __init__(self):
         self.vec=[]
@@ -171,18 +170,18 @@ class IntraFeaturePooling:
     def get_mean_pooling(self, vec, uniqueID):
         self.vec=vec
         self.uniqueID = uniqueID
-        self.df = pd.DataFrame({'uniqueID': uniqueID, 'vec_column': list(vec)})
-        print(self.df.shape)
+        df = pd.DataFrame({'uniqueID': uniqueID, 'vec_column': list(vec)})
+        print(df.shape)
         func = lambda grp: np.mean(grp)
-        self.mean_pooling=np.vstack(self.df.groupby('uniqueID')['vec_column'].apply(func).values)
+        self.mean_pooling=np.vstack(df.groupby('uniqueID')['vec_column'].apply(func).values)
         print(self.mean_pooling.shape)
         return self.mean_pooling
     def get_median_pooling(self, vec, uniqueID):
         self.vec=vec
         self.uniqueID=uniqueID
-        self.df= pd.DataFrame({'uniqueID': uniqueID, 'vec_column':vec})
-        func=lambda grp:np.median(grp)
-        self.median_pooling=np.vstack(self.df.groupby('uniqueID')['vec_column'].apply(func).values)
+        df= pd.DataFrame({'uniqueID': uniqueID, 'vec_column': vec})
+        func = lambda grp:np.median(grp)
+        self.median_pooling=np.vstack(df.groupby('uniqueID')['vec_column'].apply(func).values)
         return self.median_pooling
 
 class Autoencoder:
