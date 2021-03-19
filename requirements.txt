@@ -163,7 +163,7 @@ pathspec==0.8.0
 pbr==5.4.5
 pexpect==4.8.0
 pickleshare==0.7.5
-Pillow==7.1.2
+Pillow==8.1.1
 pip-tools @ file:///home/conda/feedstock_root/build_artifacts/pip-tools_1590664009246/work
 plac==0.9.6
 pluggy @ file:///Users/runner/miniforge3/conda-bld/pluggy_1588616565973/work
