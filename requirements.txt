@@ -100,7 +100,7 @@ jedi==0.17.0
 Jinja2==2.11.2
 jinja2-time==0.2.0
 jmespath @ file:///home/conda/feedstock_root/build_artifacts/jmespath_1589369830981/work
-joblib==0.14.1
+joblib==1.2.0
 jsonnet==0.15.0
 jsonpickle==1.4.1
 jsonschema==3.2.0
